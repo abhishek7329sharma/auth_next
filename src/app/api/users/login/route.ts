@@ -15,12 +15,9 @@ export async function POST(request: NextRequest) {
         // check if user already exists
         const user = await User.findOne({ email });
         if (!user) {
-        console.log("User exists 1");
-
             return NextResponse.json({ error: "User not found" }, { status: 400 });
         }
-        console.log("User exists 2");
-
+        console.log("User exists");
         // check if password is correct
         const validPassword = await bcryptjs.compare(password, user.password);
         if (!validPassword) {
@@ -46,13 +43,10 @@ export async function POST(request: NextRequest) {
             },
             { status: 200 }
         );
-
         response.cookies.set("token", token, {
             httpOnly: true,
         });
-
         console.log("response", response);
-
         return response;
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
